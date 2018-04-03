@@ -21,6 +21,7 @@ namespace DataSpider.Stock
                 conn = new SQLiteConnection("Data Source=" + DbPath);
                 conn.Open();
                 CreateTable(SqlAssemble.sqlCreateTable_StockInfo);
+                CreateTable(SqlAssemble.sqlCreateTable_StockHisTradeData);
             }
             else
             {

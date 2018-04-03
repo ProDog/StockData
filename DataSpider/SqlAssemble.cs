@@ -18,5 +18,23 @@ namespace DataSpider.Stock
           ""Stock_CreateDate"" TEXT,
           PRIMARY KEY(""Stock_Code"")
         );";
+
+        public static string sqlCreateTable_StockHisTradeData = @" 
+        CREATE TABLE ""StockHisTradeData"" (
+          ""ID"" text NOT NULL,
+          ""Code"" TEXT NOT NULL,
+          ""StartDate"" TEXT,
+          ""StartPrice"" real,
+          ""EndPrice"" REAL,
+          ""ChangePrice"" REAL,
+          ""ChangeRatio"" TEXT,
+          ""LowPrice"" REAL,
+          ""HighPrice"" REAL,
+          ""TotalHand"" TEXT,
+          ""TotalAmount"" TEXT,
+          ""ChangeHandRate"" TEXT,
+          ""UpdateDate"" TEXT,
+          PRIMARY KEY(""ID"")
+        );";
     }
 }

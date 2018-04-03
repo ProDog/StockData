@@ -14,18 +14,31 @@ namespace DataSpider.Stock
     public static class GetStockInfo
     {
         public const string StockListUrl = @"http://quote.eastmoney.com/stocklist.html";
-        
+
 
         public static void SaveStockInfoToSqlite()
         {
+            int index = 1;
             DbHelper db = new DbHelper();
             var dic = ReadAllStockInfo();
             foreach (var item in dic)
             {
-                string sql =
-                    string.Format(
-                        "insert into StockInfo (Stock_Code,Stock_Name,Stock_Type,Stock_Exchange,Stock_StartDate,Stock_CreateDate) values ('{0}','{1}','{2}','{3}','{4}','{5}')",item.Key,item.Value.Name,item.Value.Type,item.Value.Exchange,item.Value.StartDate,item.Value.CreateDate);
-                db.ExecInsertSql(sql);
+                try
+                {
+                    string sql =
+                        string.Format(
+                            "insert into StockInfo (Stock_Code,Stock_Name,Stock_Type,Stock_Exchange,Stock_StartDate,Stock_CreateDate) values ('{0}','{1}','{2}','{3}','{4}','{5}')",
+                            item.Key, item.Value.Name, item.Value.Type, item.Value.Exchange, item.Value.StartDate,
+                            item.Value.CreateDate);
+                    db.ExecInsertSql(sql);
+                    Console.WriteLine("Save stock info {0} successfully. {1}/{2}", item.Key, index, dic.Count);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Save stock info {0} fail. wrong message:{1}", item.Key, ex.ToString());
+                    Console.ReadKey();
+                }
+
             }
             db.CloseConn();
         }
@@ -45,6 +58,7 @@ namespace DataSpider.Stock
             Dictionary<string, StockInfo> dicStock = new Dictionary<string, StockInfo>();
             foreach (var item in dicExchange)
             {
+                Console.WriteLine("Get {0} Exchange Data...",item.Key);
                 //获取所有子节点
                 var res = doc.DocumentNode.SelectSingleNode(item.Value).SelectNodes(@"li");
                 if (res.Count > 0)
